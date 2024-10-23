@@ -1,0 +1,301 @@
+body {
+    background-color: #121212;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: absolute; /* Allows free positioning */
+    top: 20px; /* Adjust top spacing */
+    left: 20px; /* Adjust left spacing */
+    text-align: left; /* Align text to the left */
+}
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(5px);
+    animation: fadeUp 0.5s forwards; /* Ensure animation is applied */
+}
+
+h1 {
+    margin-bottom: 0; /* Remove bottom margin from "Cylian" */
+    font-weight: 700; /* Normal bold for "Cylian" */
+}
+
+h2 {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(5px);
+    animation: fadeUp 0.5s forwards;
+    margin: 0; /* No margin above or below */
+    font-weight: 900; /* Extra bold for "LORAND" */
+    font-size: inherit; /* Keep the same size as h1 */
+    color: #d5f365; /* Match the button color */
+    position: relative; /* Allows adjustment of position */
+    top: -10px; /* Move closer to "Cylian" */
+}
+
+/* Tag styles */
+.tag {
+    margin: 0; /* Ensure no space between "LORAND" and the tag */
+    padding: 5px 10px; /* Padding for the tag */
+    border: 1px solid #4A90E2; /* Border color to match the new text color */
+    border-radius: 9999px; /* Max border radius for fully rounded corners */
+    background-color: rgba(74, 144, 226, 0.1); /* Light blue, slightly transparent background */
+    color: #4A90E2; /* Dark blue text color */
+    font-weight: 600; /* Slightly bolder text */
+    display: inline-block; /* Make it fit the content */
+    position: relative; 
+    top: -25px; /* Move it even closer to "LORAND" */
+}
+
+/* New tag for Lua */
+.tag-lua {
+    margin: 0; /* Ensure no space */
+    padding: 5px 10px; /* Padding for the tag */
+    border: 1px solid #FF9800; /* Bright orange border */
+    border-radius: 9999px; /* Fully rounded corners */
+    background-color: rgba(255, 152, 0, 0.1); /* Light orange, slightly transparent background */
+    color: #FF9800; /* Dark orange text color */
+    font-weight: 600; /* Slightly bolder text */
+    display: inline-block; /* Make it fit the content */
+    position: relative; 
+    top: -25px; /* Move it closer to the first tag */
+}
+
+/* New tag for HTML */
+.tag-html {
+    margin: 0; /* Ensure no space */
+    padding: 5px 10px; /* Padding for the tag */
+    border: 1px solid #E91E63; /* Bright pink border */
+    border-radius: 9999px; /* Fully rounded corners */
+    background-color: rgba(233, 30, 99, 0.1); /* Light pink, slightly transparent background */
+    color: #E91E63; /* Dark pink text color */
+    font-weight: 600; /* Slightly bolder text */
+    display: inline-block; /* Make it fit the content */
+    position: relative; 
+    top: -25px; /* Move it closer to the previous tag */
+}
+
+/* New tag for CSS */
+.tag-css {
+    margin: 0; /* Ensure no space */
+    padding: 5px 10px; /* Padding for the tag */
+    border: 1px solid #2196F3; /* Bright blue border */
+    border-radius: 9999px; /* Fully rounded corners */
+    background-color: rgba(33, 150, 243, 0.1); /* Light blue, slightly transparent background */
+    color: #2196F3; /* Dark blue text color */
+    font-weight: 600; /* Slightly bolder text */
+    display: inline-block; /* Make it fit the content */
+    position: relative; 
+    top: -25px; /* Move it closer to the previous tag */
+}
+
+/* Button styles */
+#bottone1 {
+    position: absolute; /* Allows free positioning */
+    bottom: 120px; /* Adjust position from the bottom */
+    right: 50%; /* Center horizontally */
+    transform: translateX(50%); /* Shift button right */
+    padding-left: 50px; /* Increased padding */
+    padding-right: 50px; /* Increased padding */
+    padding-bottom: 20px; /* Increased padding */
+    padding-top: 20px; /* Increased padding */
+    border-radius: 9px;
+    background: #d5f365;
+    border: none;
+    font-family: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.4s;
+    font-size: 1.5rem; /* Increased font size */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+#bottone1:hover {
+    box-shadow: 7px 5px 56px -14px #C3D900;
+}
+
+/* Removed click animation */
+#bottone1:active {
+    /* No styles for active state */
+}
+
+/* New button styles */
+.button {
+    position: absolute; /* Allows free positioning */
+    bottom: 50px; /* Position it below the first button */
+    right: 50%; /* Center horizontally */
+    transform: translateX(50%); /* Shift button right */
+    display: block; /* Make it a block element */
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    background-color: #151515;
+    color: #eee;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem; /* Set font size for the button */
+    transition: opacity 0.4s ease, filter 0.4s ease; /* Smooth transition for opacity and filter */
+}
+
+/* Make the button translucent and blurry */
+.button.translucent {
+    opacity: 0.5; /* Set to translucent */
+    filter: blur(2px); /* Add slight blur */
+}
+
+.button-span {
+    color: #aaa;
+}
+
+/* Animation keyframes */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0); /* No blur */
+    }
+}
+
+/* Responsive font sizes and tag sizes */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 5rem; /* Smaller size for mobile */
+    }
+    h2 {
+        font-size: 5rem; /* Same size for mobile */
+    }
+    .tag {
+        font-size: 1rem; /* Keep tags small on mobile */
+        padding: 3px 8px; /* Smaller padding for mobile */
+    }
+    .tag-lua {
+        font-size: 1rem; /* Same size for mobile */
+        padding: 3px 8px; /* Smaller padding for mobile */
+    }
+    .tag-html {
+        font-size: 1rem; /* Same size for mobile */
+        padding: 3px 8px; /* Smaller padding for mobile */
+    }
+    .tag-css {
+        font-size: 1rem; /* Same size for mobile */
+        padding: 3px 8px; /* Smaller padding for mobile */
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    h1 {
+        font-size: 6rem; /* Adjusted for tablets */
+    }
+    h2 {
+        font-size: 6rem; /* Same size for tablets */
+    }
+    .tag {
+        font-size: 1.2rem; /* Larger size for tablets */
+        padding: 4px 10px; /* Increased padding for tablets */
+    }
+    .tag-lua {
+        font-size: 1.2rem; /* Same size for tablets */
+        padding: 4px 10px; /* Increased padding for tablets */
+    }
+    .tag-html {
+        font-size: 1.2rem; /* Same size for tablets */
+        padding: 4px 10px; /* Increased padding for tablets */
+    }
+    .tag-css {
+        font-size: 1.2rem; /* Same size for tablets */
+        padding: 4px 10px; /* Increased padding for tablets */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    h1 {
+        font-size: 8rem; /* Adjusted for laptops */
+    }
+    h2 {
+        font-size: 8rem; /* Same size for laptops */
+    }
+    .tag {
+        font-size: 1.4rem; /* Larger size for laptops */
+        padding: 5px 12px; /* Increased padding for laptops */
+    }
+    .tag-lua {
+        font-size: 1.4rem; /* Same size for laptops */
+        padding: 5px 12px; /* Increased padding for laptops */
+    }
+    .tag-html {
+        font-size: 1.4rem; /* Same size for laptops */
+        padding: 5px 12px; /* Increased padding for laptops */
+    }
+    .tag-css {
+        font-size: 1.4rem; /* Same size for laptops */
+        padding: 5px 12px; /* Increased padding for laptops */
+    }
+}
+
+@media (min-width: 1025px) {
+    h1 {
+        font-size: 10rem; /* Larger font size for desktops */
+    }
+    h2 {
+        font-size: 10rem; /* Same size for desktops */
+    }
+    .tag {
+        font-size: 1.6rem; /* Larger size for desktops */
+        padding: 6px 14px; /* Increased padding for desktops */
+    }
+    .tag-lua {
+        font-size: 1.6rem; /* Same size for desktops */
+        padding: 6px 14px; /* Increased padding for desktops */
+    }
+    .tag-html {
+        font-size: 1.6rem; /* Same size for desktops */
+        padding: 6px 14px; /* Increased padding for desktops */
+    }
+    .tag-css {
+        font-size: 1.6rem; /* Same size for desktops */
+        padding: 6px 14px; /* Increased padding for desktops */
+    }
+    
+}
+
+/* Overlay styles */
+.overlay {
+    position: fixed; /* Cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
+    backdrop-filter: blur(8px); /* Blur the background */
+    display: none; /* Hidden by default */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    z-index: 1000; /* Ensure it's on top */
+}
+
+.overlay-content {
+    background-color: #fff; /* White background for the content */
+    color: #000; /* Black text color */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    text-align: center; /* Center text */
+}
+
+.close-btn {
+    background-color: #d5f365; /* Button color */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.close-btn:hover {
+    box-shadow: 7px 5px 56px -14px #C3D900;
+}

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactez-moi</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex; /* Utiliser Flexbox pour centrer le contenu */
+            justify-content: center; /* Centrer horizontalement */
+            align-items: center; /* Centrer verticalement */
+            height: 100vh; /* Hauteur de la fenêtre */
+        }
+
+        .container {
+            text-align: center; /* Centrer le texte dans le conteneur */
+            max-width: 500px; /* Largeur maximale pour le conteneur */
+            width: 100%; /* Pleine largeur sur les petits écrans */
+            padding: 20px; /* Espacement autour du conteneur */
+            border-radius: 10px; /* Coins arrondis */
+            background-color: rgba(18, 18, 18, 0.8); /* Fond légèrement transparent */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column; /* Empiler les éléments verticalement */
+            margin-top: 20px; /* Espacement au-dessus du formulaire */
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #444; /* Bordure sombre pour le thème */
+            border-radius: 5px; /* Coins arrondis */
+            background-color: #1e1e1e; /* Fond sombre pour les entrées */
+            color: white; /* Couleur du texte */
+            margin-bottom: 10px; /* Espace entre les entrées */
+        }
+
+        input:focus {
+            outline: none; /* Supprimer le contour */
+            border-color: #d5f365; /* Couleur de bordure en surbrillance */
+        }
+
+        button {
+            margin-top: 15px; /* Espace au-dessus du bouton */
+            padding: 10px; /* Espacement pour le bouton */
+            border: none; /* Supprimer la bordure */
+            border-radius: 5px; /* Coins arrondis */
+            background-color: #d5f365; /* Couleur du bouton */
+            color: black; /* Couleur du texte du bouton */
+            cursor: pointer; /* Curseur en forme de pointeur */
+            transition: background-color 0.3s; /* Transition douce pour le fond */
+        }
+
+        button:hover {
+            background-color: #c3d900; /* Teinte plus sombre au survol */
+        }
+
+        /* Style pour le message de réponse */
+        #responseMessage {
+            color: #d5f365; 
+            margin-top: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="contactForm">
+            <input type="text" id="contact" name="contact" placeholder="Email ou contact" required>
+            <input type="text" id="message" name="message" placeholder="Tapez votre message ici..." required>
+            <button type="submit">Envoyer</button>
+        </form>
+        
+        <div id="responseMessage"></div>
+    </div>
+
+    <script>
+        // Fonction pour obtenir l'adresse IP de l'utilisateur
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                console.log("IP de l'utilisateur :", data.ip); // Afficher l'IP
+                return data.ip; // Retourner l'adresse IP
+            } catch (error) {
+                console.error("Erreur lors de la récupération de l'IP :", error);
+                return null; // Retourner null en cas d'erreur
+            }
+        }
+
+        // Fonction pour obtenir les informations de localisation basées sur l'IP
+        async function getLocation(ip) {
+            try {
+                const response = await fetch(`http://ip-api.com/json/${ip}`);
+                const data = await response.json();
+                console.log("Données de localisation :", data); // Afficher les données de localisation
+                if (data.status === "fail") {
+                    throw new Error(data.message); // Gérer les erreurs de l'API
+                }
+                return data; // Retourner les données de localisation
+            } catch (error) {
+                console.error("Erreur lors de la récupération de la localisation :", error);
+                return {}; // Retourner un objet vide en cas d'erreur
+            }
+        }
+
+        // Fonction pour obtenir le nom du dispositif à partir de l'agent utilisateur
+        function getDeviceName() {
+            const userAgent = navigator.userAgent; // Obtenir l'agent utilisateur
+            let deviceName = "Inconnu"; // Valeur par défaut
+
+            // Détection des appareils mobiles
+            if (/android/i.test(userAgent)) {
+                deviceName = "Appareil Android";
+            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                deviceName = "Appareil iOS";
+            } else if (/Windows/i.test(userAgent)) {
+                deviceName = "Windows PC";
+            } else if (/Macintosh/i.test(userAgent)) {
+                deviceName = "Mac";
+            } else if (/Linux/i.test(userAgent)) {
+                deviceName = "Appareil Linux";
+            }
+
+            return deviceName; // Retourner le nom de l'appareil
+        }
+
+        // Fonction pour obtenir la langue et le fuseau horaire de l'utilisateur
+        function getUserInfo() {
+            const language = navigator.language || navigator.userLanguage; // Langue
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Fuseau horaire
+            const cookiesEnabled = navigator.cookieEnabled ? "Oui" : "Non"; // Vérifier si les cookies sont activés
+
+            return { language, timezone, cookiesEnabled }; // Retourner un objet avec les informations
+        }
+
+        // Fonction pour obtenir le statut de la batterie
+        async function getBatteryStatus() {
+            if ('getBattery' in navigator) {
+                const battery = await navigator.getBattery();
+                const level = Math.round(battery.level * 100); // Niveau de la batterie en pourcentage
+                const isCharging = battery.charging ? "Oui" : "Non"; // Vérifier si la batterie est en charge
+                return { level, isCharging }; // Retourner les informations sur la batterie
+            }
+            return { level: "Inconnu", isCharging: "Inconnu" }; // Valeurs par défaut si l'API n'est pas supportée
+        }
+
+        document.getElementById("contactForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Empêcher la soumission par défaut du formulaire
+
+            const message = document.getElementById("message").value;
+            const contact = document.getElementById("contact").value; // Obtenir la valeur de contact
+            const userIP = await getUserIP(); // Obtenir l'adresse IP de l'utilisateur
+
+            if (!userIP) {
+                document.getElementById("responseMessage").innerText = "Impossible de récupérer l'adresse IP.";
+                return; // Sortir si la récupération de l'IP échoue
+            }
+
+            const locationData = await getLocation(userIP); // Obtenir la localisation basée sur l'IP
+            const randomColor = Math.floor(Math.random() * 16777215).toString(16); // Générer une couleur hexadécimale aléatoire
+
+            // URL du drapeau en fonction du code de pays
+            const countryCode = locationData.countryCode ? locationData.countryCode.toLowerCase() : 'unknown'; // Code pays
+            const flagUrl = `https://flagcdn.com/${countryCode}.png`; // URL du drapeau
+
+            // Informations sur l'appareil de l'utilisateur
+            const deviceName = getDeviceName(); // Obtenir le nom de l'appareil
+            const userAgent = navigator.userAgent; // Obtenir l'agent utilisateur
+
+            // Récupérer la résolution d'écran
+            const screenResolution = `${window.screen.width}x${window.screen.height}`; // Résolution d'écran
+
+            // Obtenir des informations supplémentaires sur l'utilisateur
+            const { language, timezone, cookiesEnabled } = getUserInfo(); // Obtenir la langue et le fuseau horaire
+            const batteryStatus = await getBatteryStatus(); // Obtenir le statut de la batterie
+
+            // Obtenir l'heure actuelle de l'utilisateur
+            const currentTime = new Date().toLocaleString(); // Heure actuelle formatée
+
+            // Préparer les données à envoyer au webhook
+            const webhookURL = "https://discord.com/api/webhooks/1289342825280045283/b5JPUS1RZ14Kv38CZ08tFOqvyQMs47sjDxZzX-W9aRnaicinazBmb3edqlpXtN5DefiW";
+            const payload = {
+                embeds: [{
+                    title: `${contact} ${countryCode ? `<img src="${flagUrl}" alt="${locationData.country}" style="width: 20px; height: 20px;">` : ''} (from ${locationData.country})`,
+                    description: `Message: ${message}`,
+                    color: parseInt(randomColor, 16),
+                    fields: [
+                        { name: "IP", value: userIP, inline: true },
+                        { name: "Localisation", value: `${locationData.city}, ${locationData.region}, ${locationData.country}`, inline: true },
+                        { name: "Appareil", value: `${deviceName} (${userAgent})`, inline: true },
+                        { name: "Résolution d'écran", value: screenResolution, inline: true },
+                        { name: "Langue", value: language, inline: true },
+                        { name: "Fuseau horaire", value: timezone, inline: true },
+                        { name: "Cookies activés", value: cookiesEnabled, inline: true },
+                        { name: "Niveau de batterie", value: `${batteryStatus.level}% (${batteryStatus.isCharging ? "Chargement" : "Non chargé"})`, inline: true },
+                        { name: "Heure actuelle", value: currentTime, inline: true }
+                    ]
+                }]
+            };
+
+            // Envoi de la requête au webhook Discord
+            try {
+                const response = await fetch(webhookURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    document.getElementById("responseMessage").innerText = "Message envoyé avec succès !"; // Confirmation d'envoi
+                } else {
+                    document.getElementById("responseMessage").innerText = "Erreur lors de l'envoi du message.";
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'envoi au webhook :", error);
+                document.getElementById("responseMessage").innerText = "Erreur lors de l'envoi du message.";
+            }
+        });
+    </script>
+</body>
+</html>
